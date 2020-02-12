@@ -1,5 +1,5 @@
 @extends('layouts.general')
-@section('title', 'BP')
+@section('title', 'Biggan Projukti')
 @section('content')
 
     @include('general.home.news_feed')

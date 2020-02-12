@@ -72,7 +72,7 @@ class GeneralController extends Controller
     {
         $visitor_ip = $this->get_client_ip();
         $this->saveVisitorCount($visitor_ip);
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $featured_posts = Post::join('categories', 'categories.category_id', '=', 'posts.category_id')
             ->where('posts.publish_status', 1)
             ->where('posts.pin_post', 1)
@@ -114,7 +114,7 @@ class GeneralController extends Controller
             ->get();
 
         return view('general.home.index')
-            ->with('all', $navbar)
+            ->with('categories', $navbar)
             ->with('featured_posts', $featured_posts)
             ->with('latest_posts', $latest_posts)
             ->with('weekly_posts', $weekly_posts)
@@ -129,7 +129,7 @@ class GeneralController extends Controller
         //return $headline;
         $visitor_ip = "192.2566.5";
         $this->saveVisitorCount($visitor_ip);
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $post = Post::where('post_id', $id)
             ->join('users', 'users.id', '=', 'posts.author_id')
             ->first();
@@ -140,14 +140,14 @@ class GeneralController extends Controller
             ->limit(5)->orderBy('post_id', 'DESC')
             ->get();
 
-        $popular_posts =  Post::join('categories', 'categories.category_id', '=', 'posts.category_id')
+        $popular_posts = Post::join('categories', 'categories.category_id', '=', 'posts.category_id')
             ->limit(5)->orderBy('post_id', 'DESC')
             ->get();
         $advertisement = Advertisement::get();
         $comments = Comment::where('post_id', $id)->where('approve_status', true)->get();
         $this->postViewCounter($id);
         return view('general.details.index')
-            ->with('all', $navbar)
+            ->with('categories', $navbar)
             ->with('post', $post)
             ->with('related_posts', $related_post)
             ->with('popular_posts', $popular_posts)
@@ -163,7 +163,7 @@ class GeneralController extends Controller
         //return $headline;
         $visitor_ip = "192.2566.5";
         $this->saveVisitorCount($visitor_ip);
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $post = Video::where('video_id', $id)
             ->join('users', 'users.id', '=', 'videos.author_id')
             ->first();
@@ -188,7 +188,7 @@ class GeneralController extends Controller
     {
         $visitor_ip = "192.2566.5";
         $this->saveVisitorCount($visitor_ip);
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $post = ExhibitionPost::join('users', 'users.id', '=', 'exhibition_posts.author_id')
             ->get();
         $selected_navbar = Menu::join('categories', 'categories.category_id', '=', 'menus.category_id')->get();
@@ -209,23 +209,24 @@ class GeneralController extends Controller
 
     public function selectedCategoryPost($category_name)
     {
+
         $visitor_ip = "192.2566.5";
         $this->saveVisitorCount($visitor_ip);
         $posts = Post::join('categories', 'categories.category_id', '=', 'posts.category_id')
             ->where('categories.category_name', $category_name)
             ->where('posts.publish_status', 1)
-            ->limit(50)
+            ->limit(13)
             ->get();
-        $navbar = Category::get();
-        $selected_navbar = Menu::join('categories', 'categories.category_id', '=', 'menus.category_id')->get();
-        $recent_posts = Post::limit(5)->orderBy('post_id', 'DESC')->get();
+        $navbar = Category::limit(14)->get();
+
+        $latest_posts = Post::join('categories', 'categories.category_id', '=', 'posts.category_id')->limit(8)->orderBy('posts.post_id', 'DESC')->get();
         $advertisement = Advertisement::get();
         return view('general.categorize_post.index')
-            ->with('all', $navbar)
+            ->with('categories', $navbar)
             ->with('posts', $posts)
-            ->with('recent_posts', $recent_posts)
+            ->with('latest_posts', $latest_posts)
             ->with('advertisement', $advertisement)
-            ->with('navbars', $selected_navbar);
+            ->with('category_name', $category_name);
 
     }
 
@@ -243,7 +244,7 @@ class GeneralController extends Controller
             ->get();
 
         $advertisement = Advertisement::get();
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $selected_navbar = Menu::join('categories', 'categories.category_id', '=', 'menus.category_id')->get();
 
 
@@ -266,7 +267,7 @@ class GeneralController extends Controller
             ->where('publish_status', 1)
             ->get();*/
         $advertisement = Advertisement::get();
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $selected_navbar = Menu::join('categories', 'categories.category_id', '=', 'menus.category_id')->get();
 
 
@@ -298,7 +299,7 @@ class GeneralController extends Controller
             ->where('publish_status', 1)
             ->get();*/
         $advertisement = Advertisement::get();
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $selected_navbar = Menu::join('categories', 'categories.category_id', '=', 'menus.category_id')->get();
 
 
@@ -312,7 +313,7 @@ class GeneralController extends Controller
 
     public function contact()
     {
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $selected_navbar = Menu::join('categories', 'categories.category_id', '=', 'menus.category_id')->get();
 
         return view('general.contact.index')
@@ -330,7 +331,7 @@ class GeneralController extends Controller
             ->where('posts.publish_status', 1)
             ->limit(50)
             ->get();
-        $navbar = Category::get();
+        $navbar = Category::limit(14)->get();
         $selected_navbar = Menu::join('categories', 'categories.category_id', '=', 'menus.category_id')->get();
         $recent_posts = Post::limit(5)->orderBy('post_id', 'DESC')->where('publish_status', 1)->get();
         $advertisement = Advertisement::get();

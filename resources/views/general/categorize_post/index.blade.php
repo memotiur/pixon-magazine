@@ -1,156 +1,117 @@
 @extends('layouts.general')
 @section('title', 'Details')
 @section('content')
+    <section class="block-inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>Food News</h1>
+                    <div class="breadcrumbs">
+                        <ul>
+                            <li><i class="pe-7s-home"></i> <a href="/" title="">Home</a></li>
+                            <li><a href="#" title="">{{$category_name}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <div class="container">
-
         <div class="row">
-
-            <!--Top Advertisement Start-->
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-12 full-row-add">
-                        <div class="text-center">
-                            <img src="/img/add.gif" width="100%" height="90px">
+            <div class="col-md-8">
+                @foreach($posts as $post)
+                    <div class="col-md-6">
+                        <div class="post-style1">
+                            <div class="post-wrapper wow fadeIn" data-wow-duration="1s">
+                                <!-- post image -->
+                                <a href="#"><img src="{{$post->post_featured_image}}"
+                                                 class="img-responsive" alt=""></a>
+                                <div class="post-info meta-info-rn">
+                                    <div class="slide">
+                                        <a target="_blank" href="#" class="post-badge btn_eight">H</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- post title -->
+                            <h4>
+                                <a href="/article/details/{{$post->post_id}}/{{str_replace(' ', '-', $post->post_headline)}}">{{$post->post_headline}}</a>
+                            </h4>
+                            <div class="post-title-author-details">
+                                <div class="date">
+                                    <ul>
+                                        <li><img src="/theme/images/comment-01.jpg" class="img-responsive" alt=""></li>
+                                        <li>By<a title="" href="#"><span>Jone Kilna</span></a> --</li>
+                                        <li><a title="" href="#">{{ date('M d, Y', strtotime($post->created_at))}}</a>
+                                            --
+                                        </li>
+                                        <li><a title="" href="#"><span>275 Comments</span></a></li>
+                                    </ul>
+                                </div>
+                                <p>{!! str_limit($post->post_details,300,'') !!}<a href="#">Read more...</a></p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
 
             </div>
-            <!--Top Advertisement End-->
-            <div class="col-12 col-md-8 news-details">
-
-                @if (count($posts) > 0)
-                    <div class="col-12 row">
-                        @php($i=1)
-                        @foreach($posts as $post)
-                            @php($i++)
-
-                            <div class="col-4">
-                                <a href="/article/details/{{$post->post_id}}/{{str_replace(' ', '-', $post->post_headline)}}">
-                                    <img src="/images/post/{{$post->post_featured_image}}" class="category_post_image" width="100%"/>
-                                </a>
-                            </div>
-
-                            <div class="col-8">
-                                <a href="/article/details/{{$post->post_id}}/{{str_replace(' ', '-', $post->post_headline)}}">
-                                    <h5>{{$post->post_headline}}</h5>
-                                    <div class="col-12 horizontal-line"></div>
-                                    <p style="overflow: hidden;display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">{{$post->post_details}}</p>
-
-                                </a>
-                                <a href="/article/details/{{$post->post_id}}/{{str_replace(' ', '-', $post->post_headline)}}"
-                                   class="btn btn-outline-danger btn-sm">আরো
-                                    দেখুন </a>
-                                <hr>
-                            </div>
-
-
-                        @endforeach
+            <div class="col-md-4">
+                <aside class="col-sm-12 left-padding">
+                    <div class="input-group search-area c-search">
+                        <!-- search area -->
+                        <input type="text" class="form-control" placeholder="Search articles here ..." name="q">
+                        <div class="input-group-btn">
+                            <button class="btn btn-search" type="submit"><i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     </div>
-
-                @else
-
-                    <div class="alert alert-info">
-                        Nothing found here.
-                    </div>
-                @endif
-            </div>
-
-
-            <div class="col-md-4 col-12">
-
-                <div class="row  right-side">
-                    <div class="detail-page-right-side">
-                        <h4>সাম্প্রতিক পোস্ট</h4>
-                        @if(isset($recent_posts))
-                            @foreach($recent_posts as $recent_post)
-                                <hr>
-                                <div class="news-grid">
-                                    <a href="/article/details/{{$recent_post->post_id}}/{{str_replace(' ', '-', $recent_post->post_headline)}}">
-                                        <div class="row">
-                                            <div class="col-md-4"><img
-                                                        src="/images/post/{{$recent_post->post_featured_image}}"
-                                                        width="100%"/></div>
-                                            <div class="col-md-8">
-                                                <h4>{{$recent_post->post_headline}}</h4>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
-
-                <div class="row  right-side">
-                    <div class="detail-page-right-side">
-                        <img src="/img/grid_ad.gif" width="100%"/>
-                    </div>
-                </div>
-                <div class="row  right-side">
-                    <div class="detail-page-right-side">
-                        <h4>ক্যাটেগরি </h4>
-                        <hr>
-                        <ul class="list-unstyled">
-                            @foreach($all as $nav)
-                                <li><a href="#"><i
-                                                class="fa fa-chevron-right checvron-size"></i> {{$nav->category_name}}
-                                    </a><span
-                                            class="post-count pull-right">(10)</span></li>
-                            @endforeach
+                   {{-- <!-- social icon -->
+                    <h3 class="category-headding ">SOCIAL PIXEL</h3>
+                    <div class="headding-border"></div>
+                    <div class="social">
+                        <ul>
+                            <li><a href="#" class="facebook"><i class="fa  fa-facebook"></i><span>3987</span> </a></li>
+                            <li><a href="#" class="twitter"><i class="fa  fa-twitter"></i><span>3987</span></a></li>
+                            <li><a href="#" class="google"><i class="fa  fa-google-plus"></i><span>3987</span></a></li>
+                            <li><a href="#" class="flickr"><i class="fa fa-flickr"></i><span>3987</span> </a></li>
                         </ul>
-                    </div>
-                </div>
+                    </div>--}}
+                    <!-- /.social icon -->
+                    @include('general.includes.popular_tab')
 
-                <div class="row  right-side">
-                    <div class="detail-page-right-side">
-                        <h4>আর্কাইভ </h4>
-                        <hr>
-                        <ul class="list-unstyled">
-                            <li><a href="#"><i class="fa fa-chevron-right"></i> জানুয়ারি</a></li>
-                            <li><a href="#"><i class="fa fa-chevron-right"></i> ফেব্রুয়ারি</a></li>
-                            <li><a href="#"><i class="fa fa-chevron-right"></i> মার্চ</a></li>
-                            <li><a href="#"><i class="fa fa-chevron-right"></i> এপ্রিল</a></li>
-                        </ul>
-                    </div>
-                </div>
-
+                </aside>
             </div>
         </div>
 
+        {{--
+                <!-- pagination -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" class="prev">
+                                        <i class="pe-7s-angle-left"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#" class="active">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li> ...</li>
+                                <li><a href="#">15</a></li>
+                                <li>
+                                    <a href="#" class="next"> <i class="pe-7s-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="banner">
+                                <img src="images/top-bannner2.jpg" class="img-responsive center-block" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>--}}
     </div>
 
-    <script>
-        $('a.share').click(function (e) {
-            e.preventDefault();
-            var $link = $(this);
-            var href = $link.attr('href');
-            var network = $link.attr('data-network');
-
-            var networks = {
-                facebook: {width: 600, height: 300},
-                twitter: {width: 600, height: 254},
-                google: {width: 515, height: 490},
-                linkedin: {width: 600, height: 473}
-            };
-
-            var popup = function (network) {
-                var options = 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,';
-                window.open(href, '', options + 'height=' + networks[network].height + ',width=' + networks[network].width);
-            }
-
-            popup(network);
-        });
-    </script>
-
-    <script>(function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
 @endsection

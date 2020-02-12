@@ -18,13 +18,14 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'GeneralController@index');
 Route::get('/article/details/{id}/{headline}', 'GeneralController@postDetails');
+Route::get('/topics/{category_name}', 'GeneralController@selectedCategoryPost');
 //Start Populating Homepage
 /*Route::get('/home/slider-area', 'GeneralController@homeSliderArea');
 Route::get('/home/first-row-area', 'GeneralController@firstRowArea');
 //End Populating Homepage
 
 
-Route::get('/topics/{category_name}', 'GeneralController@selectedCategoryPost');
+
 
 Route::any('/search', 'GeneralController@search');
 Route::any('/month/search', 'GeneralController@monthWiseSearch');

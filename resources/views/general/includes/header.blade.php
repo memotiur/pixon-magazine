@@ -171,11 +171,11 @@
         <nav class="navbar">
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/" class="category01">HOME</a></li>
+                    <li class="active"><a href="/" class="category01">হোম</a></li>
 
-                    <li><a href="/" class="category02">FASHION</a></li>
-                    <li><a href="/" class="category05">Business</a></li>
-                    <li><a href="/" class="category03">Technology</a></li>
+                    @foreach($categories as $category)
+                        <li><a href="/topics/{{$category->category_name}}" class="category0<?php echo rand(2, 7)?>">{{$category->category_name}}</a></li>
+                    @endforeach
 
                 </ul>
             </div>
